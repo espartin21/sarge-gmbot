@@ -1,1 +1,0 @@
-web: java -jar out/artifacts/sarge_gmbot_jar/sarge-gmbot.jar

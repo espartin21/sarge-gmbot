@@ -9,4 +9,9 @@ public class PingController {
     public String ping() {
         return "Pong!";
     }
+
+    @GetMapping("/")
+    public String index() {
+        return "Hello World";
+    }
 }
