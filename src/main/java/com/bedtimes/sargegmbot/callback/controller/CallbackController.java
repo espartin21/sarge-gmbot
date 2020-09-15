@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CallbackController {
     @PostMapping("/callback")
-    public void callback(@RequestBody CallbackData body) {
-        System.out.println("hello");
+    public String callback(@RequestBody CallbackData body) {
+        return body.getName();
     }
 }
