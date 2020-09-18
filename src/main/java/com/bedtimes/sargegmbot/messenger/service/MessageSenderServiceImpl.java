@@ -1,20 +1,30 @@
-package com.bedtimes.sargegmbot.messenger;
+package com.bedtimes.sargegmbot.messenger.service;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-public class MessageSender {
-    private final String BOT_ID = "7d3b71b2cc584ba2252f84056b";
+@PropertySources({
+    @PropertySource("classpath:application.properties"),
+    @PropertySource("classpath:application-${spring.profiles.active}.properties")
+})
+@Service
+public class MessageSenderServiceImpl implements MessageSenderService {
+    @Value("${groupme.bot.id}")
+    private String BOT_ID;
 
-    private final String POST_URL = "https://api.groupme.com/v3/bots/post";
+    @Value("${groupme.post-url}")
+    private String POST_URL;
 
-    public void sendTextMessage(String msg) {
+    public ResponseEntity<String> sendTextMessage(String msg) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -26,6 +36,6 @@ public class MessageSender {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        ResponseEntity<String> response = restTemplate.postForEntity(POST_URL, request, String.class);
+        return restTemplate.postForEntity(POST_URL, request, String.class);
     }
 }
