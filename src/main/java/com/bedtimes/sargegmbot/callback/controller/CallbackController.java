@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CallbackController {
-    @Value("${groupme.bot.name")
+    @Value("${groupme.bot.name}")
     private String BOT_NAME;
 
     final MessageSenderService messageSenderService;
