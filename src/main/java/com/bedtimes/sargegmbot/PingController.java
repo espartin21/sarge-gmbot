@@ -12,7 +12,7 @@ public class PingController {
     @Autowired
     MessageSenderServiceImpl messageSenderService;
 
-    @Value("${groupme.bot.name")
+    @Value("${groupme.bot.name}")
     private String bot_name;
 
     @GetMapping("/ping")
