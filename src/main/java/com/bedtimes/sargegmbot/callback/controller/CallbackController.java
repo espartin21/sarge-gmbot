@@ -28,6 +28,8 @@ public class CallbackController {
 
         // Check that whoever sent the message isn't us (the bot)
         if (!senderName.equals(BOT_NAME)) {
+            System.out.println(senderName + "and " + BOT_NAME);
+
             ResponseEntity<String> response = messageSenderService.sendTextMessage(callbackData.getText());
 
             if (response.getStatusCode() != HttpStatus.ACCEPTED) {
