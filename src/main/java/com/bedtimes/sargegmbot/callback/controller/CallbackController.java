@@ -3,18 +3,12 @@ package com.bedtimes.sargegmbot.callback.controller;
 import com.bedtimes.sargegmbot.callback.CallbackData;
 import com.bedtimes.sargegmbot.messenger.service.MessageSenderService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@PropertySources({
-    @PropertySource("classpath:application.properties"),
-    @PropertySource("classpath:application-${spring.profiles.active}.properties")
-})
 @RestController
 public class CallbackController {
     @Value("${groupme.bot.name")
@@ -30,8 +24,10 @@ public class CallbackController {
     public void callback(@RequestBody CallbackData callbackData) {
         System.out.println(callbackData.getName() + ": " + callbackData.getText());
 
+        String senderName = callbackData.getName();
+
         // Check that whoever sent the message isn't us (the bot)
-        if (!callbackData.getName().equals(BOT_NAME)) {
+        if (!senderName.equals(BOT_NAME)) {
             ResponseEntity<String> response = messageSenderService.sendTextMessage(callbackData.getText());
 
             if (response.getStatusCode() != HttpStatus.ACCEPTED) {
