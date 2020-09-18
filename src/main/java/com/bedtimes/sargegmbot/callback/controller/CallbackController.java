@@ -31,14 +31,12 @@ public class CallbackController {
         System.out.println(callbackData.getName() + ": " + callbackData.getText());
 
         // Check that whoever sent the message isn't us (the bot)
-        if (callbackData.getName() == BOT_NAME) {
-            return;
-        }
+        if (callbackData.getName() != BOT_NAME) {
+            ResponseEntity<String> response = messageSenderService.sendTextMessage(callbackData.getText());
 
-        ResponseEntity<String> response = messageSenderService.sendTextMessage(callbackData.getText());
-
-        if (response.getStatusCode() != HttpStatus.CREATED) {
-            System.out.println("Following message failed to send: " + callbackData.getText());
+            if (response.getStatusCode() != HttpStatus.ACCEPTED) {
+                System.out.println("Following message failed to send: " + callbackData.getText());
+            }
         }
     }
 }
