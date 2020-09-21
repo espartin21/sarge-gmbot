@@ -32,7 +32,8 @@ public class CallbackController {
             // For debugging purposes
             System.out.println(senderName + "and " + BOT_NAME);
 
-            String msg = messageParserService.parseMessage(callbackData.getText());
+            String sentMessageText = callbackData.getText();
+            String msg = messageParserService.parseMessage(sentMessageText);
 
             ResponseEntity<String> response = messageSenderService.sendTextMessage(callbackData.getText() /* msg will go in here later */);
 
