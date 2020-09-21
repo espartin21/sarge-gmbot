@@ -30,7 +30,7 @@ public class CallbackController {
         // Check that whoever sent the message isn't us (the bot)
         if (!senderName.equals(BOT_NAME)) {
             // For debugging purposes
-            System.out.println(senderName + "and " + BOT_NAME);
+            System.out.println("From " + senderName + " to " + BOT_NAME);
 
             String sentMessageText = callbackData.getText();
             String msg = messageParserService.parseMessage(sentMessageText);
