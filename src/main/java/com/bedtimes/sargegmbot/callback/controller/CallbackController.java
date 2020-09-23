@@ -34,8 +34,8 @@ public class CallbackController {
 
             String sentMessageText = callbackData.getText();
             String msg = messageParserService.parseMessage(sentMessageText);
-
-            ResponseEntity<String> response = messageSenderService.sendTextMessage(callbackData.getText() /* msg will go in here later */);
+				System.out.println("Command Response: " + msg);
+            ResponseEntity<String> response = messageSenderService.sendTextMessage(msg);
 
             if (response.getStatusCode() != HttpStatus.ACCEPTED) {
                 System.out.println("Following message failed to send: " + callbackData.getText());
