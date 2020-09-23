@@ -51,15 +51,15 @@ public class MessageParserServiceImpl implements MessageParserService {
 		parser = new DefaultParser();
 
 		// Print Option Registry
-		System.out.println("\n\nREGISTRY: " + Command.registry.stream().map(x -> x.option.getLongOpt()).collect(Collectors.toList()) + "\n\n");
+		System.out.println("\n\nREGISTRY: "
+				+ Command.registry.stream().map(x -> x.option.getLongOpt()).collect(Collectors.toList()) + "\n\n");
 	}
 
 	public String parseMessage(String msg) {
 		if (!msg.substring(0, PREFIX.length()).equals(PREFIX)) {
 			System.out.println("Not a Command [ " + PREFIX + " ]: " + msg);
-			return "";
+			return null;
 		}
-
 		try {
 			CommandLine cmd = parser.parse(options, msg.substring(PREFIX.length()).split(" "));
 
@@ -69,9 +69,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 					}).collect(Collectors.toList());
 
 			msg = output.toString();
-
 			msg = msg.substring(1, msg.length() - 1);
-
 		} catch (ParseException e) {
 			msg = "Try using '" + PREFIX + " --" + help.option.getLongOpt() + "' for more information";
 		}
