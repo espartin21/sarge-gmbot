@@ -55,13 +55,13 @@ public class MessageParserServiceImpl implements MessageParserService {
 	}
 
 	public String parseMessage(String msg) {
-		if (!msg.substring(0, 1).equals(PREFIX)) {
+		if (!msg.substring(0, PREFIX.length()).equals(PREFIX)) {
 			System.out.println("Not a Command [ " + PREFIX + " ]: " + msg);
 			return "";
 		}
 
 		try {
-			CommandLine cmd = parser.parse(options, msg.substring(1).split(" "));
+			CommandLine cmd = parser.parse(options, msg.substring(PREFIX.length()).split(" "));
 
 			List<String> output = Command.registry.stream().filter(x -> Arrays.asList(cmd.getOptions()).contains(x.option))
 					.map(s -> {
