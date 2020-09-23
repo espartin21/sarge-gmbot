@@ -68,8 +68,10 @@ public class MessageParserServiceImpl implements MessageParserService {
 						return s.execute();
 					}).collect(Collectors.toList());
 
-			msg = output.toString();
-			msg = msg.substring(1, msg.length() - 1);
+			for (String m : output) {
+				msg += msg + m + "\n";
+			}
+			msg = msg.substring(0, msg.length() - 1);
 		} catch (ParseException e) {
 			msg = "Try using '" + PREFIX + " --" + help.option.getLongOpt() + "' for more information";
 		}
