@@ -31,7 +31,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 		public String execute() {
 			String msg = "Commands:";
 			for (Command cmd : Command.registry) {
-				msg = msg + "\n" + cmd.option.getOpt() + " : " + cmd.option.getDescription();
+				msg = msg + "\n-" + cmd.option.getOpt() + " → " + cmd.option.getDescription();
 			}
 			return msg;
 		}
