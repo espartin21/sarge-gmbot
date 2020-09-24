@@ -22,7 +22,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 	@Value("${groupme.bot.prefix}")
 	private String PREFIX;
 
-	// Comand Parser
+	// Command Parser
 	private CommandLineParser parser;
 	private Options options;
 
