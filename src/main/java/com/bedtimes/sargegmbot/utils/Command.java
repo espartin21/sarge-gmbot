@@ -14,8 +14,8 @@ public class Command {
 
 	public Command(String opt, String optLong, boolean hasArg, String description, CommandAction action) {
 		option = new Option(opt, optLong, false, description);
-		registry.add(this);
 		act = action;
+		registry.add(this);
 	}
 
 	public String execute() {

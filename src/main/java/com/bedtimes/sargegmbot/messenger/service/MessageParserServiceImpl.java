@@ -38,9 +38,9 @@ public class MessageParserServiceImpl implements MessageParserService {
 	});
 
 	@SuppressWarnings("unused")
-	private Command test = new Command("t", "test", false, "This is a test", new CommandAction() {
+	private Command ping = new Command("p", "ping", false, "Pong!", new CommandAction() {
 		public String execute() {
-			return "Test";
+			return "Pong!";
 		}
 	});
 
@@ -60,6 +60,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 			System.out.println("Not a Command [ " + PREFIX + " ]: " + msg);
 			return null;
 		}
+		String out = "";
 		try {
 			CommandLine cmd = parser.parse(options, msg.substring(PREFIX.length()).split(" "));
 
@@ -69,12 +70,12 @@ public class MessageParserServiceImpl implements MessageParserService {
 					}).collect(Collectors.toList());
 
 			for (String m : output) {
-				msg += msg + m + "\n";
+				out += out + m + "\n";
 			}
-			msg = msg.substring(0, msg.length() - 1);
-		} catch (ParseException e) {
-			msg = "Try using '" + PREFIX + " --" + help.option.getLongOpt() + "' for more information";
+			out = out.substring(0, out.length() - 1);
+		} catch (Exception e) {
+			out = "Try using '" + PREFIX + " --" + help.option.getLongOpt() + "' for more information";
 		}
-		return msg;
+		return out;
 	}
 }
