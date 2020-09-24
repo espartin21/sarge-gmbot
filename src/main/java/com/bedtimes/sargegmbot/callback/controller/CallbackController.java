@@ -29,8 +29,7 @@ public class CallbackController {
 
         // Check that whoever sent the message isn't us (the bot)
         if (!senderName.equals(BOT_NAME)) {
-            String sentMessageText = callbackData.getText();
-            String msg = messageParserService.parseMessage(sentMessageText);
+            String msg = messageParserService.parseMessage(callbackData);
             if (msg != null){
                 System.out.println("Command Response: " + msg);
                 ResponseEntity<String> response = messageSenderService.sendTextMessage(msg);

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.bedtimes.sargegmbot.callback.CallbackData;
 import com.bedtimes.sargegmbot.utils.Command;
 import com.bedtimes.sargegmbot.utils.CommandAction;
 
@@ -54,7 +55,8 @@ public class MessageParserServiceImpl implements MessageParserService {
 				+ Command.registry.stream().map(x -> x.option.getLongOpt()).collect(Collectors.toList()) + "\n\n");
 	}
 
-	public String parseMessage(String msg) {
+	public String parseMessage(CallbackData callbackData) {
+		String msg = callbackData.getText();
 		if (!msg.substring(0, PREFIX.length()).equals(PREFIX)) {
 			System.out.println("Not a Command [ " + PREFIX + " ]: " + msg);
 			return null;
