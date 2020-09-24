@@ -10,7 +10,7 @@ public class Command {
 	public static List<Command> registry = new ArrayList<>();
 
 	public Option option;
-	private CommandAction act;
+	private final CommandAction act;
 
 	public Command(String opt, String optLong, boolean hasArg, String description, CommandAction action) {
 		option = new Option(opt, optLong, false, description);

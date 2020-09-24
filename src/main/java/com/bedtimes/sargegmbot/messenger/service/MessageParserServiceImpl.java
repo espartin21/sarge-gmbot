@@ -11,10 +11,10 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@SuppressWarnings("unused")
 @Service
 public class MessageParserServiceImpl implements MessageParserService {
 	@Value("${groupme.bot.name}")
@@ -23,11 +23,11 @@ public class MessageParserServiceImpl implements MessageParserService {
 	private String PREFIX;
 
 	// Command Parser
-	private CommandLineParser parser;
-	private Options options;
+	private final CommandLineParser parser;
+	private final Options options;
 
 	// Options
-	private Command help = new Command("h", "help", false, "List all commands", new CommandAction() {
+	protected final Command help = new Command("h", "help", false, "List all commands", new CommandAction() {
 		public String execute() {
 			String msg = "Commands:";
 			for (Command cmd : Command.registry) {
@@ -37,8 +37,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 		}
 	});
 
-	@SuppressWarnings("unused")
-	private Command ping = new Command("p", "ping", false, "Pong!", new CommandAction() {
+	protected final Command ping = new Command("p", "ping", false, "Pong!", new CommandAction() {
 		public String execute() {
 			return "Pong!";
 		}
@@ -46,7 +45,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 	public MessageParserServiceImpl() {
 		options = new Options();
-		Command.registry.stream().forEach(x -> options.addOption(x.option));
+		Command.registry.forEach(x -> options.addOption(x.option));
 
 		parser = new DefaultParser();
 
