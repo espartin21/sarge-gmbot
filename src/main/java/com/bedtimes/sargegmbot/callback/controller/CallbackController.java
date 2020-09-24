@@ -29,16 +29,13 @@ public class CallbackController {
 
         // Check that whoever sent the message isn't us (the bot)
         if (!senderName.equals(BOT_NAME)) {
-            // For debugging purposes
-            System.out.println("From " + senderName + " to " + BOT_NAME);
-
-            String sentMessageText = callbackData.getText();
-            String msg = messageParserService.parseMessage(sentMessageText);
-
-            ResponseEntity<String> response = messageSenderService.sendTextMessage(callbackData.getText() /* msg will go in here later */);
-
-            if (response.getStatusCode() != HttpStatus.ACCEPTED) {
-                System.out.println("Following message failed to send: " + callbackData.getText());
+            String msg = messageParserService.parseMessage(callbackData);
+            if (msg != null){
+                System.out.println("Command Response: " + msg);
+                ResponseEntity<String> response = messageSenderService.sendTextMessage(msg);
+                if (response.getStatusCode() != HttpStatus.ACCEPTED) {
+                     System.out.println("Following message failed to send: " + msg);
+                }
             }
         }
     }
