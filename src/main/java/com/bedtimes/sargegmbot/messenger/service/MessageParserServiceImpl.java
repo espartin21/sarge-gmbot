@@ -57,7 +57,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 	public String parseMessage(CallbackData callbackData) {
 		String msg = callbackData.getText();
-		if (!msg.substring(0, PREFIX.length()).equals(PREFIX)) {
+		if (!msg.startsWith(PREFIX)) {
 			System.out.println("Not a Command [ " + PREFIX + " ]: " + msg);
 			return null;
 		}
@@ -71,7 +71,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 					}).collect(Collectors.toList());
 
 			for (String m : output) {
-				out += out + m + "\n";
+				out += m + "\n";
 			}
 			out = out.substring(0, out.length() - 1);
 		} catch (Exception e) {
