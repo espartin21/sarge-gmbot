@@ -18,7 +18,7 @@ public class Command {
 		registry.add(this);
 	}
 
-	public String execute(CallbackData callbackData, String... args) {
-		return act.execute(callbackData, args);
+	public String execute(CallbackData callbackData) {
+		return act.execute(callbackData);
 	}
 }

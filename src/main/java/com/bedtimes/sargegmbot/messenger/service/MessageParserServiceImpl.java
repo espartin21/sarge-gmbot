@@ -34,7 +34,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 	private final Options options;
 	// Options
 	protected final Command help = new Command("h", "help", false, "List all commands", new CommandAction() {
-		public String execute(CallbackData callbackData, String... args) {
+		public String execute(CallbackData callbackData) {
 			String msg = "Commands: ";
 			for (Command cmd : Command.registry) {
 				msg = msg + "\n-" + cmd.option.getOpt() + "\t→ " + cmd.option.getDescription();
@@ -44,13 +44,13 @@ public class MessageParserServiceImpl implements MessageParserService {
 	});
 
 	protected final Command ping = new Command("p", "ping", false, "Pong!", new CommandAction() {
-		public String execute(CallbackData callbackData, String... args) {
+		public String execute(CallbackData callbackData) {
 			return "Pong!";
 		}
 	});
 
 	protected final Command setSettings = new Command("s", "settings", true, "Set the class settings", new CommandAction() {
-		public String execute(CallbackData callbackData, String... args) {
+		public String execute(CallbackData callbackData) {
 			ObjectMapper om = new ObjectMapper();
 
 			try {
@@ -64,7 +64,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 	});
 
 	protected final Command getClassInfo = new Command("c", "class", false, "Gets a Class's information", new CommandAction() {
-		public String execute(CallbackData callbackData, String... args) {
+		public String execute(CallbackData callbackData) {
 			String dat = "No Information Available";
 			if(settings != null){
 				dat = "Class: " + settings.getSubject() + " " + settings.getSection();
@@ -76,7 +76,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 	});
 
 	protected final Command getProfInfo = new Command("prof", "professor", false, "Gets a Professor's information", new CommandAction() {
-		public String execute(CallbackData callbackData, String... args) {
+		public String execute(CallbackData callbackData) {
 			String dat = "No Information Available";
 			if(settings != null){
 				dat = "Professor: " + settings.getProfessor().getName();
@@ -89,7 +89,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 	});
 
 	protected final Command getTAInfo = new Command("ta", "ta", false, "Gets a TA's information", new CommandAction() {
-		public String execute(CallbackData callbackData, String... args) {
+		public String execute(CallbackData callbackData) {
 			String dat = "No Information Available";
 			if(settings != null){
 				dat = "";
@@ -106,7 +106,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 	});
 
 	protected final Command hello = new Command("hello", "hello", false, "Greets a user.", new CommandAction() {
-		public String execute(CallbackData callbackData, String... args) {
+		public String execute(CallbackData callbackData) {
 			return "Hello, " + callbackData.getName();
 		}
 	});
@@ -134,7 +134,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 			List<String> output = Command.registry.stream().filter(x -> Arrays.asList(cmd.getOptions()).contains(x.option))
 					.map(s -> {
-						return s.execute(callbackData, cmd.getArgs());
+						return s.execute(callbackData);
 					}).collect(Collectors.toList());
 
 			for (String m : output) {
