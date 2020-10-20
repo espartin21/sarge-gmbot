@@ -52,7 +52,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 	protected final Command setSettings = new Command("s", "settings", true, "Set the class settings", new CommandAction() {
 		public String execute(CallbackData callbackData) {
 			ObjectMapper om = new ObjectMapper();
-
+			//TODO Save Settings somewhere on disk
 			try {
 				settings = om.readValue(callbackData.getText().substring(PREFIX.length() + 4), SettingsDTO.class);
 			} catch (JsonProcessingException e) {
