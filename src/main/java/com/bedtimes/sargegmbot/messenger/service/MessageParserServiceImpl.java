@@ -29,7 +29,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 	// Options
 	protected final Command help = new Command("h", "help", false, "List all commands", new CommandAction() {
-		public String execute() {
+		public String execute(CallbackData callbackData) {
 			String msg = "Commands:";
 			for (Command cmd : Command.registry) {
 				msg = msg + "\n-" + cmd.option.getOpt() + "\t→ " + cmd.option.getDescription();
@@ -39,8 +39,15 @@ public class MessageParserServiceImpl implements MessageParserService {
 	});
 
 	protected final Command ping = new Command("p", "ping", false, "Pong!", new CommandAction() {
-		public String execute() {
+		public String execute(CallbackData callbackData) {
 			return "Pong!";
+		}
+	});
+
+	protected final Command hello = new Command("hello", "hello", true, "Greets a user.", new CommandAction() {
+		public String execute(CallbackData callbackData) {
+
+			return new StringBuilder().append("Hello, ").append(callbackData.getName()).toString();
 		}
 	});
 
@@ -67,7 +74,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 			List<String> output = Command.registry.stream().filter(x -> Arrays.asList(cmd.getOptions()).contains(x.option))
 					.map(s -> {
-						return s.execute();
+						return s.execute(callbackData);
 					}).collect(Collectors.toList());
 
 			for (String m : output) {
