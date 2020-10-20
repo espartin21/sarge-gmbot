@@ -13,13 +13,12 @@ public class Command {
 	private final CommandAction act;
 
 	public Command(String opt, String optLong, boolean hasArg, String description,  CommandAction action) {
-		option = new Option(opt, optLong, false, description);
+		option = new Option(opt, optLong, hasArg, description);
 		act = action;
 		registry.add(this);
-
 	}
 
-	public String execute(CallbackData callbackData) {
-		return act.execute(callbackData);
+	public String execute(CallbackData callbackData, String... args) {
+		return act.execute(callbackData, args);
 	}
 }

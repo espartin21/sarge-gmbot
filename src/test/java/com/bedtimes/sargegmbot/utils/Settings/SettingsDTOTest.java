@@ -12,11 +12,14 @@ public class SettingsDTOTest {
 		Person p1 = new Person("John Smith", "john@tamu.edu", "ABP", "MWF 2:30");
 		Person p2 = new Person("Cecil H.", "BigGuy@tamu.edu", "KGHM", "MWF 2:30");
 
-		SettingsDTO s = new SettingsDTO("CSCE", "464", "Computers & New Media", "link", p0, new Person[] { p1, p2 });
+		SettingsDTO s = new SettingsDTO("CSCE", "464", "Computers & New Media", "TBD", "TBD", "link", p0, new Person[] { p1, p2 });
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		String str = objectMapper.writeValueAsString(s);
 		System.out.println(str);
+
+		SettingsDTO s1 = objectMapper.readValue(str, SettingsDTO.class);
+		System.out.println(s1);
 	}
 }

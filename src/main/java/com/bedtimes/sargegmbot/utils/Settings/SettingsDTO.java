@@ -11,6 +11,8 @@ public class SettingsDTO {
 	public String subject;
 	public String section;
 	public String className;
+	public String location;
+	public String meetingTime;
 	public String syllabusURL;
 	public Person professor;
 	public Person[] ta;
