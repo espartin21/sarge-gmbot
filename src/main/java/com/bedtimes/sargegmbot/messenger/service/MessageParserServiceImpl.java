@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.bedtimes.sargegmbot.callback.CallbackData;
 import com.bedtimes.sargegmbot.utils.Command;
 import com.bedtimes.sargegmbot.utils.CommandAction;
+import com.bedtimes.sargegmbot.utils.Settings.SettingsDTO;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -23,10 +24,11 @@ public class MessageParserServiceImpl implements MessageParserService {
 	@Value("${groupme.bot.prefix}")
 	private String PREFIX;
 
+	private SettingsDTO settings = new SettingsDTO();
+
 	// Command Parser
 	private final CommandLineParser parser;
 	private final Options options;
-
 	// Options
 	protected final Command help = new Command("h", "help", false, "List all commands", new CommandAction() {
 		public String execute() {
@@ -41,6 +43,13 @@ public class MessageParserServiceImpl implements MessageParserService {
 	protected final Command ping = new Command("p", "ping", false, "Pong!", new CommandAction() {
 		public String execute() {
 			return "Pong!";
+		}
+	});
+
+	protected final Command setSettings = new Command("s", "settings", false, "Set the class settings", new CommandAction() {
+		public String execute() {
+
+			return "";
 		}
 	});
 

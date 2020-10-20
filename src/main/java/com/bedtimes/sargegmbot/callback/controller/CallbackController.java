@@ -30,7 +30,7 @@ public class CallbackController {
         // Check that whoever sent the message isn't us (the bot)
         if (!senderName.equals(BOT_NAME)) {
             String msg = messageParserService.parseMessage(callbackData);
-            if (msg != null){
+            if (msg != null || msg != ""){
                 System.out.println("Command Response: " + msg);
                 ResponseEntity<String> response = messageSenderService.sendTextMessage(msg);
                 if (response.getStatusCode() != HttpStatus.ACCEPTED) {
