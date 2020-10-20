@@ -46,8 +46,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 	protected final Command hello = new Command("hello", "hello", true, "Greets a user.", new CommandAction() {
 		public String execute(CallbackData callbackData) {
-
-			return new StringBuilder().append("Hello, ").append(callbackData.getName()).toString();
+			return "Hello, " + callbackData.getName();
 		}
 	});
 
