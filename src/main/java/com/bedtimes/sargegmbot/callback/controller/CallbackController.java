@@ -27,6 +27,8 @@ public class CallbackController {
     public void callback(@RequestBody CallbackData callbackData) {
         String senderName = callbackData.getName();
 
+        System.out.println(callbackData.getAttachments());
+
         // Check that whoever sent the message isn't us (the bot)
         if (!senderName.equals(BOT_NAME)) {
             String msg = messageParserService.parseMessage(callbackData);

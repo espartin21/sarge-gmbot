@@ -1,5 +1,6 @@
 package com.bedtimes.sargegmbot.utils;
+import com.bedtimes.sargegmbot.callback.CallbackData;
 
 public interface CommandAction {
-	String execute();
+	String execute(CallbackData callbackData);
 }
