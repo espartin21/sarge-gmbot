@@ -32,7 +32,6 @@ public class MentionAllServiceImpl implements MentionAllService {
         List<String> memberNames = membersToMention.stream().map(memberInfo -> "@" + memberInfo.get(0)).collect(Collectors.toList());
         List<String> memberIDs = membersToMention.stream().map(memberInfo -> memberInfo.get(1)).collect(Collectors.toList());
 
-        String mentionString = String.join(" ", memberNames);
         List<List<Integer>> loci = new ArrayList<>();
         int start = msgStart.length() + 1;
 
