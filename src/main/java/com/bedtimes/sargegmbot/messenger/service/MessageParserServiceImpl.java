@@ -39,7 +39,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 		public String execute(CallbackData callbackData) {
 			String msg = "Commands: ";
 			for (Command cmd : Command.registry) {
-				msg = msg + "\n-" + cmd.option.getOpt() + "\t-> " + cmd.option.getDescription();
+				msg = msg + "\\n-" + cmd.option.getOpt() + "\\t→ " + cmd.option.getDescription();
 			}
 			return msg;
 		}
@@ -70,8 +70,8 @@ public class MessageParserServiceImpl implements MessageParserService {
 			String dat = "No Information Available";
 			if(settings != null){
 				dat = "Class: " + settings.getSubject() + " " + settings.getSection();
-				dat += "\nName: " + settings.getClassName();
-				dat += "\nSyllabus: " + settings.getSyllabusURL();
+				dat += "\\nName: " + settings.getClassName();
+				dat += "\\nSyllabus: " + settings.getSyllabusURL();
 			}
 			return dat;
 		}
@@ -82,9 +82,9 @@ public class MessageParserServiceImpl implements MessageParserService {
 			String dat = "No Information Available";
 			if(settings != null){
 				dat = "Professor: " + settings.getProfessor().getName();
-				dat += "\nemail: " + settings.getProfessor().getEmail();
-				dat += "\nOffice: " + settings.getProfessor().getOffice();
-				dat += "\nOffice Hours: " + settings.getProfessor().getOfficeHours();
+				dat += "\\nemail: " + settings.getProfessor().getEmail();
+				dat += "\\nOffice: " + settings.getProfessor().getOffice();
+				dat += "\\nOffice Hours: " + settings.getProfessor().getOfficeHours();
 			}
 			return dat;
 		}
@@ -96,10 +96,10 @@ public class MessageParserServiceImpl implements MessageParserService {
 			if(settings != null){
 				dat = "";
 				for (Person p : settings.getTa()) {
-					dat =  "\nTA: " + p.getName();
-					dat += "\nemail: " + p.getEmail();
-					dat += "\nOffice: " + p.getOffice();
-					dat += "\nOffice Hours: " + p.getOfficeHours();
+					dat =  "\\nTA: " + p.getName();
+					dat += "\\nemail: " + p.getEmail();
+					dat += "\\nOffice: " + p.getOffice();
+					dat += "\\nOffice Hours: " + p.getOfficeHours();
 				}
 				dat = dat.substring(1);
 			}
@@ -129,8 +129,8 @@ public class MessageParserServiceImpl implements MessageParserService {
 		parser = new DefaultParser();
 
 		// Print Option Registry
-		System.out.println("\n\nREGISTRY: "
-				+ Command.registry.stream().map(x -> x.option.getLongOpt()).collect(Collectors.toList()) + "\n\n");
+		System.out.println("\\n\\nREGISTRY: "
+				+ Command.registry.stream().map(x -> x.option.getLongOpt()).collect(Collectors.toList()) + "\\n\\n");
 	}
 
 	public String parseMessage(CallbackData callbackData) {
