@@ -8,6 +8,10 @@ import com.bedtimes.sargegmbot.callback.CallbackData;
 import com.bedtimes.sargegmbot.mention.service.MentionAllService;
 import com.bedtimes.sargegmbot.utils.Command;
 import com.bedtimes.sargegmbot.utils.CommandAction;
+import com.bedtimes.sargegmbot.utils.Settings.Person;
+import com.bedtimes.sargegmbot.utils.Settings.SettingsDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -24,16 +28,18 @@ public class MessageParserServiceImpl implements MessageParserService {
 	@Value("${groupme.bot.prefix}")
 	private String PREFIX;
 
+
 	final MentionAllService mentionAllService;
+
+	private SettingsDTO settings = null;
 
 	// Command Parser
 	private final CommandLineParser parser;
 	private final Options options;
-
 	// Options
 	protected final Command help = new Command("h", "help", false, "List all commands", new CommandAction() {
 		public String execute(CallbackData callbackData) {
-			String msg = "Commands:";
+			String msg = "Commands: ";
 			for (Command cmd : Command.registry) {
 				msg = msg + "\n-" + cmd.option.getOpt() + "\t→ " + cmd.option.getDescription();
 			}
@@ -47,7 +53,63 @@ public class MessageParserServiceImpl implements MessageParserService {
 		}
 	});
 
-	protected final Command hello = new Command("hello", "hello", true, "Greets a user.", new CommandAction() {
+	protected final Command setSettings = new Command("s", "settings", true, "Set the class settings", new CommandAction() {
+		public String execute(CallbackData callbackData) {
+			ObjectMapper om = new ObjectMapper();
+			//TODO Save Settings somewhere on disk
+			try {
+				settings = om.readValue(callbackData.getText().substring(PREFIX.length() + 4), SettingsDTO.class);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+				return "Malformed Settings";
+			}
+			return "Settings Set";
+		}
+	});
+
+	protected final Command getClassInfo = new Command("c", "class", false, "Gets a Class's information", new CommandAction() {
+		public String execute(CallbackData callbackData) {
+			String dat = "No Information Available";
+			if(settings != null){
+				dat = "Class: " + settings.getSubject() + " " + settings.getSection();
+				dat += "\nName: " + settings.getClassName();
+				dat += "\nSyllabus: " + settings.getSyllabusURL();
+			}
+			return dat;
+		}
+	});
+
+	protected final Command getProfInfo = new Command("prof", "professor", false, "Gets a Professor's information", new CommandAction() {
+		public String execute(CallbackData callbackData) {
+			String dat = "No Information Available";
+			if(settings != null){
+				dat = "Professor: " + settings.getProfessor().getName();
+				dat += "\nemail: " + settings.getProfessor().getEmail();
+				dat += "\nOffice: " + settings.getProfessor().getOffice();
+				dat += "\nOffice Hours: " + settings.getProfessor().getOfficeHours();
+			}
+			return dat;
+		}
+	});
+
+	protected final Command getTAInfo = new Command("ta", "ta", false, "Gets a TA's information", new CommandAction() {
+		public String execute(CallbackData callbackData) {
+			String dat = "No Information Available";
+			if(settings != null){
+				dat = "";
+				for (Person p : settings.getTa()) {
+					dat =  "\nTA: " + p.getName();
+					dat += "\nemail: " + p.getEmail();
+					dat += "\nOffice: " + p.getOffice();
+					dat += "\nOffice Hours: " + p.getOfficeHours();
+				}
+				dat = dat.substring(1);
+			}
+			return dat;
+		}
+	});
+
+	protected final Command hello = new Command("hello", "hello", false, "Greets a user.", new CommandAction() {
 		public String execute(CallbackData callbackData) {
 			return "Hello, " + callbackData.getName();
 		}
