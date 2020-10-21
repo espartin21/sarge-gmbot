@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @PropertySource("classpath:application.properties")
@@ -20,12 +21,12 @@ public class GetMembersServiceImpl implements GetMembersService {
     @Value("${groupme.group-id}")
     private String GROUP_ID;
 
-    public List<String> getMembers() {
+    public List<List<String>> getMembers() {
         RestTemplate restTemplate = new RestTemplate();
         String getGroupInfoUrl = "https://api.groupme.com/v3/groups/" + GROUP_ID + "?token=" + GROUP_ME_API_KEY;
         ResponseEntity<String> response = restTemplate.getForEntity(getGroupInfoUrl, String.class);
 
-        List<String> members = new ArrayList<>();
+        List<List<String>> members = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -33,7 +34,7 @@ public class GetMembersServiceImpl implements GetMembersService {
             JsonNode membersJson = root.path("response").path("members");
 
             for (JsonNode memberInfo : membersJson) {
-                members.add(memberInfo.path("nickname").asText());
+                members.add(new ArrayList<>(Arrays.asList(memberInfo.path("nickname").asText(), memberInfo.path("user_id").asText())));
             }
         } catch (Exception e) {
             System.out.println("Failed to get group members");

@@ -4,6 +4,8 @@ import com.bedtimes.sargegmbot.callback.CallbackData;
 import com.bedtimes.sargegmbot.utils.groupme.service.GetMembersService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,8 +17,31 @@ public class MentionAllServiceImpl implements MentionAllService {
         this.getMembersService = getMembersService;
     }
 
-    public void createMentions(CallbackData callbackData) {
-        List<String> members = getMembersService.getMembers();
-        List<String> membersToMention = members.stream().filter(m -> m.equals(callbackData.getName())).collect(Collectors.toList());
+    public String mentionAll(CallbackData callbackData) {
+        List<List<String>> members = getMembersService.getMembers();
+        List<List<String>> membersToMention = members.stream().filter(memberInfo -> !memberInfo.get(0).equals(callbackData.getName())).collect(Collectors.toList());
+
+        return createMentions(membersToMention, "ATTENTION");
+    }
+
+    private String createMentions(List<List<String>> membersToMention) {
+        return createMentions(membersToMention, "");
+    }
+
+    private String createMentions(List<List<String>> membersToMention, String msgStart) {
+        List<String> memberNames = membersToMention.stream().map(memberInfo -> "@" + memberInfo.get(0)).collect(Collectors.toList());
+        List<String> memberIDs = membersToMention.stream().map(memberInfo -> memberInfo.get(1)).collect(Collectors.toList());
+
+        List<List<Integer>> loci = new ArrayList<>();
+        int start = msgStart.length() + 1;
+
+        for (String name : memberNames) {
+            int length = name.length();
+            loci.add(new ArrayList<>(Arrays.asList(start, length)));
+            // +1 for space separator
+            start += length + 1;
+        }
+
+        return "[{\"loci\": " + loci + ", \"type\": \"mentions\", \"user_ids\":" + memberIDs + "}]";
     }
 }

@@ -4,4 +4,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface MessageSenderService {
     ResponseEntity<String> sendTextMessage(String msg);
+    ResponseEntity<String> sendTextMessage(String msg, String attachments);
 }
