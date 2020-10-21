@@ -101,7 +101,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 					dat += "\\nOffice: " + p.getOffice();
 					dat += "\\nOffice Hours: " + p.getOfficeHours();
 				}
-				dat = dat.substring(1);
+				dat = dat.substring(2);
 			}
 			return dat;
 		}
