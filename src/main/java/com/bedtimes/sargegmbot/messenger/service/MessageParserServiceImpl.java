@@ -39,7 +39,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 		public String execute(CallbackData callbackData) {
 			String msg = "Commands: ";
 			for (Command cmd : Command.registry) {
-				msg = msg + "\n-" + cmd.option.getOpt() + "\t→ " + cmd.option.getDescription();
+				msg = msg + "\n-" + cmd.option.getOpt() + "\t-> " + cmd.option.getDescription();
 			}
 			return msg;
 		}
