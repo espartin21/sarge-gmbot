@@ -57,9 +57,9 @@ public class MessageParserServiceImpl implements MessageParserService {
 				settings = om.readValue(callbackData.getText().substring(PREFIX.length() + 4), SettingsDTO.class);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
-				return "Malformed Settings.";
+				return "Malformed Settings";
 			}
-			return "Settings Set.";
+			return "Settings Set";
 		}
 	});
 

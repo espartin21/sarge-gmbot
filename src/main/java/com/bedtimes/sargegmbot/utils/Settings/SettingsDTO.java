@@ -16,5 +16,4 @@ public class SettingsDTO {
 	public String syllabusURL;
 	public Person professor;
 	public Person[] ta;
-
 }
