@@ -1,0 +1,22 @@
+{
+  "subject": "CSCE",
+  "section": "445",
+  "className": "Computers & New Media",
+  "location" : "Zoom",
+  "meetingTime" : "MWF 4:05pm",
+  "syllabusURL": "https://compassxe-ssb.tamu.edu/StudentSelfService/ssb/tamuProfile/viewSyllabus?term=202031&crn=34115",
+  "professor": {
+    "name": "Richard Furuta",
+    "email": "furuta@tamu.edu",
+    "office": "Zoom",
+    "officeHours": "By Appointment"
+  },
+  "ta": [
+    {
+      "name": "Sanjeev K. Singh",
+      "email": "sanjsingh@tamu.edu",
+      "office": "Zoom",
+      "officeHours": "By Appointment"
+    }
+  ]
+}

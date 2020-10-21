@@ -3,7 +3,6 @@ package com.bedtimes.sargegmbot;
 import com.bedtimes.sargegmbot.mention.service.MentionAllService;
 import com.bedtimes.sargegmbot.messenger.service.MessageSenderService;
 import com.bedtimes.sargegmbot.utils.groupme.service.GetMembersService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
