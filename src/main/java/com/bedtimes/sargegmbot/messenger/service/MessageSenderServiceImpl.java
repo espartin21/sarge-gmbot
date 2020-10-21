@@ -23,7 +23,7 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     private String POST_URL;
 
     public ResponseEntity<String> sendTextMessage(String msg) {
-        return sendTextMessage(msg, "");
+        return sendTextMessage(msg, "[]");
     }
 
     public ResponseEntity<String> sendTextMessage(String msg, String attachments) {
