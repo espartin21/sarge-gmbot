@@ -1,5 +1,6 @@
 package com.bedtimes.sargegmbot;
 
+import com.bedtimes.sargegmbot.mention.service.MentionAllService;
 import com.bedtimes.sargegmbot.messenger.service.MessageSenderService;
 import com.bedtimes.sargegmbot.utils.groupme.service.GetMembersService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,10 +15,12 @@ import java.util.List;
 public class PingController {
     final MessageSenderService messageSenderService;
     final GetMembersService getMembersService;
+    final MentionAllService mentionAllService;
 
-    public PingController(MessageSenderService messageSenderService, GetMembersService getMembersService) {
+    public PingController(MessageSenderService messageSenderService, GetMembersService getMembersService, MentionAllService mentionAllService) {
         this.messageSenderService = messageSenderService;
         this.getMembersService = getMembersService;
+        this.mentionAllService = mentionAllService;
     }
 
     @GetMapping("/ping")
@@ -30,20 +33,27 @@ public class PingController {
         return "Hello World";
     }
 
-    @PostMapping("/send")
+    @GetMapping("/send")
     public void send() {
-        String message = "hello ethan";
-        messageSenderService.sendTextMessage(message);
+        String message = "hey @Ethan Partin";
+        String attachments = "[{\"loci\": [[4, 13]], \"type\": \"mentions\", \"user_ids\": [41807887]}]";
+        messageSenderService.sendTextMessage(message, attachments);
     }
 
     @GetMapping("/members")
     public String members() {
         String x = "";
-        List<String> members = getMembersService.getMembers();
-        for (String member : members) {
-            x += member;
+        List<List<String>> members = getMembersService.getMembers();
+        for (List<String> memberInfo : members) {
+            x += memberInfo.get(0);
         }
 
         return x;
     }
+
+//    @GetMapping("/mention")
+//    public void mention() {
+//        List<List<String>> members = getMembersService.getMembers();
+//        mentionAllService.createMentions(members, "hi");
+//    }
 }

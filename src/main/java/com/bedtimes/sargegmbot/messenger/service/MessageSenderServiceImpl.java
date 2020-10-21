@@ -25,14 +25,16 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     private String POST_URL;
 
     public ResponseEntity<String> sendTextMessage(String msg) {
+        return sendTextMessage(msg, "");
+    }
+
+    public ResponseEntity<String> sendTextMessage(String msg, String attachments) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("bot_id", BOT_ID);
-        map.add("text", msg);
+        String json = "{\"bot_id\": \"" + BOT_ID + "\", \"text\": \"" + msg + "\", \"attachments\": " + attachments + "}";
 
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, httpHeaders);
+        HttpEntity<String> request = new HttpEntity<>(json, httpHeaders);
 
         RestTemplate restTemplate = new RestTemplate();
 
