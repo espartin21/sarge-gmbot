@@ -55,7 +55,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 			ObjectMapper om = new ObjectMapper();
 			//TODO Save Settings somewhere on disk
 			try {
-				SargeBotDriver.settings = om.readValue(callbackData.getText().substring(PREFIX.length() + 4), SettingsDTO.class);
+				SargeBotDriver.settings.put(callbackData.getGroup_id(), om.readValue(callbackData.getText().substring(PREFIX.length() + 4), SettingsDTO.class));
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 				return "Malformed Settings";
@@ -67,11 +67,12 @@ public class MessageParserServiceImpl implements MessageParserService {
 	protected final Command getClassInfo = new Command("c", "class", false, "Gets a Class's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
 			String dat = "No Information Available";
-			if(SargeBotDriver.settings != null){
-				dat = "Class: " + SargeBotDriver.settings.getSubject() + " " + SargeBotDriver.settings.getSection();
-				dat += "\\nName: " + SargeBotDriver.settings.getClassName();
-				dat += "\\nSyllabus: " + SargeBotDriver.settings.getSyllabusURL();
-			}
+			try{
+				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
+				dat = "Class: " + s.getSubject() + " " + s.getSection();
+				dat += "\\nName: " + s.getClassName();
+				dat += "\\nSyllabus: " + s.getSyllabusURL();
+			}catch(NullPointerException e){}
 			return dat;
 		}
 	});
@@ -79,12 +80,13 @@ public class MessageParserServiceImpl implements MessageParserService {
 	protected final Command getProfInfo = new Command("prof", "professor", false, "Gets a Professor's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
 			String dat = "No Information Available";
-			if(SargeBotDriver.settings != null){
-				dat = "Professor: " + SargeBotDriver.settings.getProfessor().getName();
-				dat += "\\nemail: " + SargeBotDriver.settings.getProfessor().getEmail();
-				dat += "\\nOffice: " + SargeBotDriver.settings.getProfessor().getOffice();
-				dat += "\\nOffice Hours: " + SargeBotDriver.settings.getProfessor().getOfficeHours();
-			}
+			try{
+				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
+				dat = "Professor: " + s.getProfessor().getName();
+				dat += "\\nemail: " + s.getProfessor().getEmail();
+				dat += "\\nOffice: " + s.getProfessor().getOffice();
+				dat += "\\nOffice Hours: " + s.getProfessor().getOfficeHours();
+			}catch(NullPointerException e){}
 			return dat;
 		}
 	});
@@ -92,16 +94,17 @@ public class MessageParserServiceImpl implements MessageParserService {
 	protected final Command getTAInfo = new Command("ta", "ta", false, "Gets a TA's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
 			String dat = "No Information Available";
-			if(SargeBotDriver.settings != null){
+			try{
 				dat = "";
-				for (Person p : SargeBotDriver.settings.getTa()) {
+				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
+				for (Person p : s.getTa()) {
 					dat =  "\\nTA: " + p.getName();
 					dat += "\\nemail: " + p.getEmail();
 					dat += "\\nOffice: " + p.getOffice();
 					dat += "\\nOffice Hours: " + p.getOfficeHours();
 				}
 				dat = dat.substring(2);
-			}
+			}catch(NullPointerException e){}
 			return dat;
 		}
 	});
