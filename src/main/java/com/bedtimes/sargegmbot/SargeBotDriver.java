@@ -1,6 +1,7 @@
 package com.bedtimes.sargegmbot;
 
-import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.bedtimes.sargegmbot.utils.Settings.SettingsDTO;
 
@@ -10,9 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SargeBotDriver {
 
-	public static Dictionary<String, SettingsDTO> settings;
+	public static Map<String, SettingsDTO> settings;
 
 	public static void main(String[] args) {
+		settings = new HashMap<String, SettingsDTO>();
 		SpringApplication.run(SargeBotDriver.class, args);
 	}
 }

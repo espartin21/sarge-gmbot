@@ -79,23 +79,22 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 	protected final Command getProfInfo = new Command("prof", "professor", false, "Gets a Professor's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
-			String dat = "No Information Available";
+			String dat = "";
 			try{
 				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
 				dat = "Professor: " + s.getProfessor().getName();
 				dat += "\\nemail: " + s.getProfessor().getEmail();
 				dat += "\\nOffice: " + s.getProfessor().getOffice();
 				dat += "\\nOffice Hours: " + s.getProfessor().getOfficeHours();
-			}catch(NullPointerException e){}
+			}catch(NullPointerException e){dat = "No Information Available";}
 			return dat;
 		}
 	});
 
 	protected final Command getTAInfo = new Command("ta", "ta", false, "Gets a TA's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
-			String dat = "No Information Available";
+			String dat = "";
 			try{
-				dat = "";
 				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
 				for (Person p : s.getTa()) {
 					dat =  "\\nTA: " + p.getName();
@@ -104,7 +103,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 					dat += "\\nOffice Hours: " + p.getOfficeHours();
 				}
 				dat = dat.substring(2);
-			}catch(NullPointerException e){}
+			}catch(NullPointerException e){ dat = "No Information Available";}
 			return dat;
 		}
 	});
