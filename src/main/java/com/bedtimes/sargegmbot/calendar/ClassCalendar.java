@@ -1,8 +1,7 @@
 package com.bedtimes.sargegmbot.calendar;
 
-import lombok.AllArgsConstructor;
+import com.bedtimes.sargegmbot.messenger.service.MessageSenderService;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -11,7 +10,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.TimeZone;
 
 @Getter
 @Setter
@@ -19,20 +17,21 @@ import java.util.TimeZone;
 public class ClassCalendar {
     private static List<Assignment> assignments;
 
-    public ClassCalendar(List<Assignment> a) {
+    private final MessageSenderService messageSenderService;
+
+    public ClassCalendar(List<Assignment> a, MessageSenderService messageSenderService) {
         assignments = a;
+        this.messageSenderService = messageSenderService;
     }
 
-    @Scheduled(fixedRate = 10000, initialDelay = 10000) // Run this every 0.5 minutes
+    @Scheduled(fixedRate = 10000, initialDelay = 10000) // Delay of 10 seconds
     public void findUpcomingAssignments() {
         Calendar currDate = Calendar.getInstance();
-        currDate.clear(Calendar.HOUR_OF_DAY);
+        currDate.clear(Calendar.HOUR);
         currDate.clear(Calendar.MINUTE);
         currDate.clear(Calendar.SECOND);
-        System.out.println(currDate.getTime());
 
-        StringBuilder out = new StringBuilder("Upcoming Assignments: \n");
-        System.out.println(out.toString().length());
+        StringBuilder out = new StringBuilder("Upcoming Assignments: \\n");
 
         for (Assignment a : assignments) {
             String[] date = a.getDueDate().split("/");
@@ -41,13 +40,12 @@ public class ClassCalendar {
             int year = Integer.parseInt(date[2]);
 
             Calendar dueDate = new GregorianCalendar(year, month, day);
-            System.out.println(dueDate.getTime());
 
             if (currDate.compareTo(dueDate) < 0) {
                 long daysBetween = ChronoUnit.DAYS.between(currDate.toInstant(), dueDate.toInstant());
 
                 if (daysBetween <= 7) {
-                    out.append(a.getAssignmentName()).append(" - ").append(a.getDueDate()).append("\n");
+                    out.append(a.getAssignmentName()).append(" - ").append(a.getDueDate()).append("\\n");
                 }
             }
         }
@@ -58,7 +56,9 @@ public class ClassCalendar {
             msg = "Yay! No upcoming assignments this week";
         }
 
-        System.out.println(msg);
+        messageSenderService.sendTextMessage(msg);
+
+//        System.out.println(msg);
     }
 
     public String printCalendar() {
