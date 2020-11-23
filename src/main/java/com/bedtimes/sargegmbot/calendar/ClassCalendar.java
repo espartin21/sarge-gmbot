@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Component
 public class ClassCalendar {
-    private static List<Assignment> assignments = null;
+    private static List<Assignment> assignments;
 
     private final MessageSenderService messageSenderService;
 
@@ -24,9 +24,10 @@ public class ClassCalendar {
         this.messageSenderService = messageSenderService;
     }
 
-    @Scheduled(fixedRate = 10000, initialDelay = 60000) // Delay of 1 minute, runs every 10 seconds
+    @Scheduled(fixedRate = 10000, initialDelay = 10000) // Delay of 1 minute, runs every 10 seconds
     public void findUpcomingAssignments() {
-        if (assignments == null) {
+        if (assignments.size() == 1 && assignments.get(0).getAssignmentName() == null && assignments.get(0).getDueDate() == null) {
+            System.out.println("No assignments imported");
             return;
         }
 
