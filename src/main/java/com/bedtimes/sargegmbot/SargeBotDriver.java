@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 public class SargeBotDriver {
-
 	public static Map<String, SettingsDTO> settings;
 
 	public static void main(String[] args) {

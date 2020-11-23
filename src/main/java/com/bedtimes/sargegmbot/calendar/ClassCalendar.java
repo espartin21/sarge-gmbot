@@ -24,7 +24,7 @@ public class ClassCalendar {
         this.messageSenderService = messageSenderService;
     }
 
-    @Scheduled(fixedRate = 10000, initialDelay = 10000) // Delay of 10 seconds
+    @Scheduled(fixedRate = 10000, initialDelay = 60000) // Delay of 1 minute, runs every 10 seconds
     public void findUpcomingAssignments() {
         Calendar currDate = Calendar.getInstance();
         currDate.clear(Calendar.HOUR);
