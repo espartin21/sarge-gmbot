@@ -1,6 +1,7 @@
 package com.bedtimes.sargegmbot.messenger.service;
 
 import java.util.stream.Collectors;
+import java.util.*;
 
 import com.bedtimes.sargegmbot.SargeBotDriver;
 import com.bedtimes.sargegmbot.callback.CallbackData;
@@ -47,6 +48,54 @@ public class MessageParserServiceImpl implements MessageParserService {
 	protected final Command ping = new Command("p", "ping", false, "Pong!", new CommandAction() {
 		public String execute(CallbackData callbackData) {
 			return "Pong!";
+		}
+	});
+
+	protected final Command addNewPin = new Command("pin", "pinMessage", false, "Add a the last message to the list of pinned messages", new CommandAction() {
+		public String execute(CallbackData callbackData) {
+			if (SargeBotDriver.pinnedMessages == null) {
+				SargeBotDriver.pinnedMessages = new HashMap<String, ArrayList<String>>(); 
+			}
+
+			if (SargeBotDriver.pinnedMessages.containsKey(callbackData.getGroup_id())) {
+				SargeBotDriver.pinnedMessages.get(callbackData.getGroup_id()).add(SargeBotDriver.previousMessages.get(callbackData.getGroup_id()).lastElement());
+
+			} else {
+				if (SargeBotDriver.previousMessages == null) {
+					SargeBotDriver.previousMessages = new HashMap<String, Stack<String>>(); 
+				}
+
+				if (SargeBotDriver.previousMessages.containsKey(callbackData.getGroup_id())) {
+					ArrayList<String> p = new ArrayList<String>();
+					p.add(SargeBotDriver.previousMessages.get(callbackData.getGroup_id()).lastElement());
+
+					SargeBotDriver.pinnedMessages.put(callbackData.getGroup_id(), p);
+
+				} else {
+					return "No messages to pin";
+				}
+			}
+
+			return "Last message added to list of pins";
+		}
+	});
+
+	protected final Command showPinnedMessages = new Command("sp", "showPins", false, "Show all current pinned messages", new CommandAction() {
+		public String execute(CallbackData callbackData) {
+			String pinnedMesses = "No Pinned Messages";
+
+			try {
+				ArrayList<String> p = SargeBotDriver.pinnedMessages.get(callbackData.getGroup_id());
+				if (p.size() > 0) {
+					pinnedMesses = "Pinned Messages: ";
+				}
+
+				for (String str : p) {
+					pinnedMesses += "\\n" + str;
+				}
+
+			} catch(NullPointerException e){}
+				return pinnedMesses;
 		}
 	});
 
@@ -136,8 +185,32 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 	public String parseMessage(CallbackData callbackData) {
 		String msg = callbackData.getText();
+
 		if (!msg.startsWith(PREFIX)) {
 			System.out.println("Not a Command [ " + PREFIX + " ]: " + msg);
+
+			if (SargeBotDriver.previousMessages == null) {
+				SargeBotDriver.previousMessages = new HashMap<String, Stack<String>>(); 
+			}
+
+			if (SargeBotDriver.previousMessages.containsKey(callbackData.getGroup_id())) {
+				SargeBotDriver.previousMessages.get(callbackData.getGroup_id()).add("'" + callbackData.getText() + "'" + " - " + callbackData.getName());
+
+				Stack<String> p = SargeBotDriver.previousMessages.get(callbackData.getGroup_id());
+
+				if (p.size() > 15) {
+					p.remove(0);
+				}
+
+			} else {
+				Stack<String> p = new Stack<String>();
+				p.add("'" + callbackData.getText() + "'" + " - " + callbackData.getName());
+
+				SargeBotDriver.previousMessages.put(callbackData.getGroup_id(), p);
+			}
+
+       		System.out.println("The new stack is: " + SargeBotDriver.previousMessages.get(callbackData.getGroup_id())); 
+
 			return null;
 		}
 
