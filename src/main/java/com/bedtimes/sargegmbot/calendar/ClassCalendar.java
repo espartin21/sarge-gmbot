@@ -24,7 +24,7 @@ public class ClassCalendar {
         this.messageSenderService = messageSenderService;
     }
 
-    @Scheduled(fixedRate = 5000, initialDelay = 10000) // Delay of 1 minute, runs every 10 seconds
+    @Scheduled(fixedRate = 20000, initialDelay = 10000) // Delay of 1 minute, runs every 10 seconds
     public void findUpcomingAssignments() {
         if (assignments == null) {
             System.out.println("No assignments imported");
