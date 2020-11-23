@@ -15,7 +15,7 @@ import java.util.List;
 @Setter
 @Component
 public class ClassCalendar {
-    private static List<Assignment> assignments;
+    private static List<Assignment> assignments = null;
 
     private final MessageSenderService messageSenderService;
 
@@ -26,6 +26,10 @@ public class ClassCalendar {
 
     @Scheduled(fixedRate = 10000, initialDelay = 60000) // Delay of 1 minute, runs every 10 seconds
     public void findUpcomingAssignments() {
+        if (assignments == null) {
+            return;
+        }
+
         Calendar currDate = Calendar.getInstance();
         currDate.clear(Calendar.HOUR);
         currDate.clear(Calendar.MINUTE);
