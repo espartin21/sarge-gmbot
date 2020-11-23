@@ -2,6 +2,7 @@ package com.bedtimes.sargegmbot.messenger.service;
 
 import java.util.stream.Collectors;
 
+import com.bedtimes.sargegmbot.SargeBotDriver;
 import com.bedtimes.sargegmbot.callback.CallbackData;
 import com.bedtimes.sargegmbot.mention.service.MentionAllService;
 import com.bedtimes.sargegmbot.utils.Command;
@@ -29,8 +30,6 @@ public class MessageParserServiceImpl implements MessageParserService {
 
 	final MentionAllService mentionAllService;
 
-	private SettingsDTO settings = null;
-
 	// Command Parser
 	private final CommandLineParser parser;
 	private final Options options;
@@ -56,7 +55,7 @@ public class MessageParserServiceImpl implements MessageParserService {
 			ObjectMapper om = new ObjectMapper();
 			//TODO Save Settings somewhere on disk
 			try {
-				settings = om.readValue(callbackData.getText().substring(PREFIX.length() + 4), SettingsDTO.class);
+				SargeBotDriver.settings.put(callbackData.getGroup_id(), om.readValue(callbackData.getText().substring(PREFIX.length() + 4), SettingsDTO.class));
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 				return "Malformed Settings";
@@ -68,41 +67,43 @@ public class MessageParserServiceImpl implements MessageParserService {
 	protected final Command getClassInfo = new Command("c", "class", false, "Gets a Class's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
 			String dat = "No Information Available";
-			if(settings != null){
-				dat = "Class: " + settings.getSubject() + " " + settings.getSection();
-				dat += "\\nName: " + settings.getClassName();
-				dat += "\\nSyllabus: " + settings.getSyllabusURL();
-			}
+			try{
+				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
+				dat = "Class: " + s.getSubject() + " " + s.getSection();
+				dat += "\\nName: " + s.getClassName();
+				dat += "\\nSyllabus: " + s.getSyllabusURL();
+			}catch(NullPointerException e){}
 			return dat;
 		}
 	});
 
 	protected final Command getProfInfo = new Command("prof", "professor", false, "Gets a Professor's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
-			String dat = "No Information Available";
-			if(settings != null){
-				dat = "Professor: " + settings.getProfessor().getName();
-				dat += "\\nemail: " + settings.getProfessor().getEmail();
-				dat += "\\nOffice: " + settings.getProfessor().getOffice();
-				dat += "\\nOffice Hours: " + settings.getProfessor().getOfficeHours();
-			}
+			String dat = "";
+			try{
+				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
+				dat = "Professor: " + s.getProfessor().getName();
+				dat += "\\nemail: " + s.getProfessor().getEmail();
+				dat += "\\nOffice: " + s.getProfessor().getOffice();
+				dat += "\\nOffice Hours: " + s.getProfessor().getOfficeHours();
+			}catch(NullPointerException e){dat = "No Information Available";}
 			return dat;
 		}
 	});
 
 	protected final Command getTAInfo = new Command("ta", "ta", false, "Gets a TA's information", new CommandAction() {
 		public String execute(CallbackData callbackData) {
-			String dat = "No Information Available";
-			if(settings != null){
-				dat = "";
-				for (Person p : settings.getTa()) {
+			String dat = "";
+			try{
+				SettingsDTO s = SargeBotDriver.settings.get(callbackData.getGroup_id());
+				for (Person p : s.getTa()) {
 					dat =  "\\nTA: " + p.getName();
 					dat += "\\nemail: " + p.getEmail();
 					dat += "\\nOffice: " + p.getOffice();
 					dat += "\\nOffice Hours: " + p.getOfficeHours();
 				}
 				dat = dat.substring(2);
-			}
+			}catch(NullPointerException e){ dat = "No Information Available";}
 			return dat;
 		}
 	});
