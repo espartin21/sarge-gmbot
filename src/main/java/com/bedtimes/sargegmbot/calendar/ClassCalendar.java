@@ -24,9 +24,12 @@ public class ClassCalendar {
         this.messageSenderService = messageSenderService;
     }
 
-    @Scheduled(fixedRate = 10000, initialDelay = 10000) // Delay of 1 minute, runs every 10 seconds
+    @Scheduled(fixedRate = 5000, initialDelay = 10000) // Delay of 1 minute, runs every 10 seconds
     public void findUpcomingAssignments() {
-        if (assignments.size() == 1 && assignments.get(0).getAssignmentName() == null && assignments.get(0).getDueDate() == null) {
+        if (assignments == null) {
+            System.out.println("No assignments imported");
+            return;
+        } else if (assignments.size() == 1 && assignments.get(0).getAssignmentName() == null && assignments.get(0).getDueDate() == null) {
             System.out.println("No assignments imported");
             return;
         }
