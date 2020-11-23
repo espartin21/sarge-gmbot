@@ -31,6 +31,7 @@ public class MessageSenderServiceImpl implements MessageSenderService {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         String json = "{\"bot_id\": \"" + BOT_ID + "\", \"text\": \"" + msg + "\", \"attachments\": " + attachments + "}";
+        System.out.println(json);
 
         HttpEntity<String> request = new HttpEntity<>(json, httpHeaders);
 
